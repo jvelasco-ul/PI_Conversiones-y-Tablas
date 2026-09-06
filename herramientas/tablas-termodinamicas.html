@@ -17,7 +17,8 @@
         .main-header { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); border-bottom: 3px solid var(--secondary-color); position: sticky; top: 0; z-index: 1000; }
         .navbar-brand img { filter: drop-shadow(0 0 8px var(--secondary-color)); }
         .nav-link:hover, .nav-link.active { color: var(--secondary-color) !important; }
-        .dropdown-menu-dark { background: rgba(0, 0, 0, 0.95); border: 1px solid var(--secondary-color); }
+        .dropdown-menu-dark { background: rgba(0, 0, 0, 0.95); border: 1px solid var(--secondary-color); z-index: 1055 !important; }
+        .dropdown-menu { z-index: 1055 !important; }
         .page-title { background: linear-gradient(45deg, var(--secondary-color), #ff9933); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin: 2rem 0; font-weight: 900; }
         .tool-card { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
         .manual-ref-box { background: rgba(255, 102, 0, 0.1); border: 2px dashed var(--secondary-color); padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0; }
@@ -114,6 +115,7 @@
                         <option value="A5">A-5: Agua saturada (por P)</option>
                         <option value="A11">A-11: R-134a saturado (por T)</option>
                         <option value="A12">A-12: R-134a saturado (por P)</option>
+                        <option value="A13">A-13: R-134a sobrecalentado</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -386,7 +388,7 @@
             let html = `<h5 class="text-warning mb-3">P = ${presion} MPa</h5>`;
             html += '<table class="table table-dark thermo-table"><thead><tr><th>T (°C)</th><th>v (m³/kg)</th><th>u (kJ/kg)</th><th>h (kJ/kg)</th><th>s (kJ/kg·K)</th></tr></thead><tbody>';
             datos.forEach(fila => {
-                html += `<tr><td><strong>${fila.T}</strong></td><td>${fila.v}</td><td>${fila.u}</td><td>${fila.h}</td><td>${fila.s}</td></tr>`;
+                html += `<tr data-valor="${fila.T}"><td><strong>${fila.T}</strong></td><td>${fila.v}</td><td>${fila.u}</td><td>${fila.h}</td><td>${fila.s}</td></tr>`;
             });
             html += '</tbody></table>';
             container.innerHTML = html;
@@ -416,7 +418,8 @@
                 'A4': 'Temperatura (°C)',
                 'A5': 'Presión (kPa)',
                 'A11': 'Temperatura (°C)',
-                'A12': 'Presión (MPa)'
+                'A12': 'Presión (MPa)',
+                'A13': 'Presión (MPa)'
             };
             input.placeholder = labels[tabla] || 'Valor';
         }
@@ -427,7 +430,7 @@
             if (isNaN(valor)) { alert('Ingrese un valor numérico'); return; }
             
             // Cambiar a la pestaña correspondiente
-            const tabMap = { 'A4': 'tab-A4', 'A5': 'tab-A5', 'A11': 'tab-A11', 'A12': 'tab-A12' };
+            const tabMap = { 'A4': 'tab-A4', 'A5': 'tab-A5', 'A11': 'tab-A11', 'A12': 'tab-A12', 'A13': 'tab-A13' };
             const tabButton = document.querySelector(`[data-bs-target="#${tabMap[tabla]}"]`);
             if (tabButton) new bootstrap.Tab(tabButton).show();
             

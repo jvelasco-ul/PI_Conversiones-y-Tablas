@@ -1,7 +1,73 @@
-(tablas/tabla-A7.html, herramientas/tablas-y-calculadoras.html, index.html, tablas/tabla-f1.html, tablas/tabla-f2.html, tablas/tabla-f3.html are source/config files)
+```
+# Compiled and binary files
+*.pyc
+__pycache__/
+*.class
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
 
-(tablas/tabla_A7_gases_ideales.json is a data/config file)
+# Dependencies
+node_modules/
+venv/
+.venv/
+.env
+.env.local
+.env.*
 
-No build artifacts, dependencies, or temp files detected in the changes. Only source/config files were added/modified.
+# Build artifacts
+dist/
+build/
+target/
+coverage/
+htmlcov/
+.coverage
 
-Nothing to ignore.
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Cache directories
+.mypy_cache/
+.pytest_cache/
+.gradle/
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```
