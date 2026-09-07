@@ -99,7 +99,7 @@
                     <div class="table-reference">
                         <h5>Búsqueda Manual</h5>
                         <ol>
-                            <li>Identifique el valor conocido (temperatura (°c))</li>
+                            <li>Identifique el valor conocido (presión (MPa) y temperatura (°C))</li>
                             <li>Busque en la columna correspondiente</li>
                             <li>Lea horizontalmente las propiedades</li>
                         </ol>
@@ -118,8 +118,13 @@
         <div class="calculator-panel">
             <h4 class="text-center"><i class="fas fa-calculator me-2"></i>Buscador Interactivo</h4>
             <div class="row g-3 mt-2">
-                <div class="col-md-8">
-                    <input type="number" id="searchInput" class="form-control" placeholder="Temperatura (°C)..." step="0.01">
+                <div class="col-md-4">
+                    <select id="pressureSelect" class="form-select">
+                        <option value="">Seleccione Presión (MPa)...</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" id="searchInput" class="form-control" placeholder="Temperatura (°C)..." step="0.01" disabled>
                 </div>
                 <div class="col-md-4">
                     <button class="btn btn-calculate w-100" onclick="buscar()">Buscar</button>
@@ -144,12 +149,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let datos = [];
+        let presionesDisponibles = [];
+        
         async function cargar() {
             try {
                 const r = await fetch('tabla_A13_R134a_sobrecalentado.json');
                 const jsonData = await r.json();
                 // Flatten the nested structure: each pressure level has an array of entries
                 datos = [];
+                presionesDisponibles = Object.keys(jsonData.datos).map(p => parseFloat(p));
+                
                 for (const [pressure, entries] of Object.entries(jsonData.datos)) {
                     entries.forEach(entry => {
                         datos.push({
@@ -162,6 +171,24 @@
                         });
                     });
                 }
+                
+                // Populate pressure dropdown
+                const pressureSelect = document.getElementById('pressureSelect');
+                presionesDisponibles.sort((a, b) => a - b).forEach(p => {
+                    const option = document.createElement('option');
+                    option.value = p;
+                    option.textContent = p + ' MPa';
+                    pressureSelect.appendChild(option);
+                });
+                
+                // Enable temperature input when pressure is selected
+                pressureSelect.addEventListener('change', function() {
+                    document.getElementById('searchInput').disabled = !this.value;
+                    if (this.value) {
+                        document.getElementById('searchInput').focus();
+                    }
+                });
+                
                 render();
             } catch(e) { 
                 document.querySelector('#tabla tbody').innerHTML = '<tr><td colspan="6">Error cargando datos</td></tr>'; 
@@ -177,11 +204,24 @@
             });
         }
         function buscar() {
-            const val = parseFloat(document.getElementById('searchInput').value);
-            if(isNaN(val)) return alert('Ingrese valor válido');
-            // Search by temperature
+            const pressureVal = parseFloat(document.getElementById('pressureSelect').value);
+            const tempVal = parseFloat(document.getElementById('searchInput').value);
+            
+            if(isNaN(pressureVal)) return alert('Seleccione una presión válida');
+            if(isNaN(tempVal)) return alert('Ingrese un valor de temperatura válido');
+            
+            // Search by pressure and temperature
             let mejor = null, diff = Infinity;
-            datos.forEach(f => { const d = Math.abs(f['T'] - val); if(d < diff) { diff = d; mejor = f; } });
+            datos.forEach(f => { 
+                if(Math.abs(f['P'] - pressureVal) < 0.001) {
+                    const d = Math.abs(f['T'] - tempVal); 
+                    if(d < diff) { 
+                        diff = d; 
+                        mejor = f; 
+                    }
+                }
+            });
+            
             if(mejor && diff < 0.5) {
                 document.getElementById('resultsContent').innerHTML = `
                     <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>PRESIÓN (MPa)</h5><p>${mejor.P}</p></div></div>
@@ -192,7 +232,7 @@
                     <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>ENTROPÍA (kJ/kg·K)</h5><p>${mejor.s}</p></div></div>
                 `;
                 document.getElementById('resultsBox').classList.add('show');
-            } else alert('No encontrado');
+            } else alert('No encontrado para esa presión y temperatura');
         }
         document.addEventListener('DOMContentLoaded', cargar);
     </script>
