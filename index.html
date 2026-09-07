@@ -74,6 +74,11 @@
         .dropdown-menu-dark {
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid var(--secondary-color);
+            z-index: 1055 !important;
+        }
+        
+        .dropdown-menu {
+            z-index: 1055 !important;
         }
         
         /* Dashboard Title */
@@ -361,18 +366,38 @@
                                 <i class="fas fa-table me-1"></i> Tablas
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="tablas/tabla-f1.html"><i class="fas fa-flask me-2"></i>Tabla F1: Densidades y Viscosidades</a></li>
-                                <li><a class="dropdown-item" href="tablas/tabla-f2.html"><i class="fas fa-pipe me-2"></i>Tabla F2: Tuberías</a></li>
-                                <li><a class="dropdown-item" href="tablas/tabla-f3.html"><i class="fas fa-wave-square me-2"></i>Tabla F3: Rugosidad</a></li>
-                                <li><a class="dropdown-item" href="tablas/tabla-f4.html"><i class="fas fa-ruler-vertical me-2"></i>Tabla F4: Longitud Equivalente</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <!-- Grupo A4-A7: Agua -->
+                                <li><h6 class="dropdown-header text-warning">Tablas de Agua (A)</h6></li>
                                 <li><a class="dropdown-item" href="tablas/tabla-A4.html"><i class="fas fa-tint me-2"></i>A-4: Agua Saturada (T)</a></li>
                                 <li><a class="dropdown-item" href="tablas/tabla-A5.html"><i class="fas fa-tachometer-alt me-2"></i>A-5: Agua Saturada (P)</a></li>
                                 <li><a class="dropdown-item" href="tablas/tabla-A6.html"><i class="fas fa-cloud me-2"></i>A-6: Vapor Sobrecalentado</a></li>
-                                <li><a class="dropdown-item" href="tablas/tabla-A7.html"><i class="fas fa-wind me-2"></i>A-7: Agua Liquida Comprimida</a></li>
-                                <li><a class="dropdown-item" href="tablas/tabla-A11.html"><i class="fas fa-snowflake me-2"></i>A-11: R-134a (T)</a></li>
-                                <li><a class="dropdown-item" href="tablas/tabla-A12.html"><i class="fas fa-compress-arrows-alt me-2"></i>A-12: R-134a (P)</a></li>
+                                <li><a class="dropdown-item" href="tablas/tabla-A7.html"><i class="fas fa-wind me-2"></i>A-7: Agua Líquida Comprimida</a></li>
+                                <!-- Grupo R134a -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header text-info">Refrigerante R-134a</h6></li>
+                                <li><a class="dropdown-item" href="tablas/tabla-A11.html"><i class="fas fa-snowflake me-2"></i>A-11: R-134a Saturado (T)</a></li>
+                                <li><a class="dropdown-item" href="tablas/tabla-A12.html"><i class="fas fa-compress-arrows-alt me-2"></i>A-12: R-134a Saturado (P)</a></li>
                                 <li><a class="dropdown-item" href="tablas/tabla-A13.html"><i class="fas fa-temperature-high me-2"></i>A-13: R-134a Sobrecalentado</a></li>
+                                <!-- Grupo B -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header text-success">Tablas B</h6></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>B-1: Próximamente</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>B-2: Próximamente</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>B-3: Próximamente</a></li>
+                                <!-- Grupo C -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header text-primary">Tablas C</h6></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>C-1: Próximamente</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-book me-2"></i>C-2: Próximamente</a></li>
+                                <!-- Grupo F1-F2 -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header text-danger">Fluidos (F)</h6></li>
+                                <li><a class="dropdown-item" href="tablas/tabla-f1.html"><i class="fas fa-flask me-2"></i>F1: Densidades y Viscosidades</a></li>
+                                <li><a class="dropdown-item" href="tablas/tabla-f2.html"><i class="fas fa-pipe me-2"></i>F2: Tuberías</a></li>
+                                <!-- Grupo F3-F4 -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="tablas/tabla-f3.html"><i class="fas fa-wave-square me-2"></i>F3: Rugosidad</a></li>
+                                <li><a class="dropdown-item" href="tablas/tabla-f4.html"><i class="fas fa-ruler-vertical me-2"></i>F4: Longitud Equivalente</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">

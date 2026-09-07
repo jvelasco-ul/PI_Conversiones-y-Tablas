@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tabla A-4 | R-134a Sobrecalentado - Procesos Industriales</title>
+    <title>Tabla A-13 | R-134a Sobrecalentado - Procesos Industriales</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -14,7 +14,8 @@
         .main-header { background: rgba(0,0,0,0.8); border-bottom: 3px solid var(--secondary-color); }
         .navbar-brand img { filter: drop-shadow(0 0 10px var(--secondary-color)); }
         .nav-link:hover { color: var(--secondary-color) !important; }
-        .dropdown-menu-dark { background: rgba(0,0,0,0.9); border: 1px solid var(--secondary-color); }
+        .dropdown-menu-dark { background: rgba(0, 0, 0, 0.95); border: 1px solid var(--secondary-color); z-index: 1055 !important; }
+        .dropdown-menu { z-index: 1055 !important; }
         .page-title { font-family: 'Orbitron'; background: linear-gradient(45deg, var(--secondary-color), #ff9933); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin: 2rem 0; }
         .info-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 2rem; margin-bottom: 2rem; }
         .table-reference { background: rgba(255,102,0,0.15); border: 2px dashed var(--secondary-color); padding: 1rem; border-radius: 8px; }
@@ -84,11 +85,11 @@
     </header>
 
     <main class="container py-4">
-        <h1 class="page-title"><i class="fas fa-table me-3"></i>TABLA A-A4<br><small>R-134a Sobrecalentado</small></h1>
+        <h1 class="page-title"><i class="fas fa-table me-3"></i>TABLA A-13<br><small>R-134a Sobrecalentado</small></h1>
         
         <div class="info-card">
             <h3><i class="fas fa-info-circle text-orange me-2"></i>Propósito</h3>
-            <p>La <strong>Tabla A-4</strong> agua saturada - por temperatura.</p>
+            <p>La <strong>Tabla A-13</strong> contiene datos de refrigerante R-134a sobrecalentado.</p>
         </div>
 
         <div class="info-card">
@@ -131,7 +132,7 @@
             <h3><i class="fas fa-list text-orange me-2"></i>Tabla Completa</h3>
             <div class="table-container">
                 <table class="table table-dark table-hover data-table" id="tabla">
-                    <thead><tr><th>T (°C)</th><th>P (kPa)</th><th>v<sub>f</sub></th><th>v<sub>g</sub></th><th>u<sub>f</sub></th><th>u<sub>g</sub></th><th>h<sub>f</sub></th><th>h<sub>fg</sub></th><th>h<sub>g</sub></th><th>s<sub>f</sub></th><th>s<sub>fg</sub></th><th>s<sub>g</sub></th></tr></thead>
+                    <thead><tr><th>P (MPa)</th><th>T (°C)</th><th>v (m³/kg)</th><th>u (kJ/kg)</th><th>h (kJ/kg)</th><th>s (kJ/kg·K)</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -146,28 +147,50 @@
         async function cargar() {
             try {
                 const r = await fetch('tabla_A13_R134a_sobrecalentado.json');
-                datos = (await r.json()).datos;
+                const jsonData = await r.json();
+                // Flatten the nested structure: each pressure level has an array of entries
+                datos = [];
+                for (const [pressure, entries] of Object.entries(jsonData.datos)) {
+                    entries.forEach(entry => {
+                        datos.push({
+                            P: parseFloat(pressure),
+                            T: entry.T,
+                            v: entry.v,
+                            u: entry.u,
+                            h: entry.h,
+                            s: entry.s
+                        });
+                    });
+                }
                 render();
-            } catch(e) { document.getElementById('tabla').innerHTML = '<tr><td>Error cargando</td></tr>'; }
+            } catch(e) { 
+                document.querySelector('#tabla tbody').innerHTML = '<tr><td colspan="6">Error cargando datos</td></tr>'; 
+            }
         }
         function render() {
             const tb = document.querySelector('#tabla tbody');
             tb.innerHTML = '';
             datos.forEach(fila => {
                 const tr = document.createElement('tr');
-                tr.innerHTML += `<td>${fila.T}</td>`;tr.innerHTML += `<td>${fila.P}</td>`;tr.innerHTML += `<td>${fila.vf}</td>`;tr.innerHTML += `<td>${fila.vg}</td>`;tr.innerHTML += `<td>${fila.uf}</td>`;tr.innerHTML += `<td>${fila.ug}</td>`;tr.innerHTML += `<td>${fila.hf}</td>`;tr.innerHTML += `<td>${fila.hfg}</td>`;tr.innerHTML += `<td>${fila.hg}</td>`;tr.innerHTML += `<td>${fila.sf}</td>`;tr.innerHTML += `<td>${fila.sfg}</td>`;tr.innerHTML += `<td>${fila.sg}</td>`;
+                tr.innerHTML = `<td>${fila.P}</td><td>${fila.T}</td><td>${fila.v}</td><td>${fila.u}</td><td>${fila.h}</td><td>${fila.s}</td>`;
                 tb.appendChild(tr);
             });
         }
         function buscar() {
             const val = parseFloat(document.getElementById('searchInput').value);
             if(isNaN(val)) return alert('Ingrese valor válido');
+            // Search by temperature
             let mejor = null, diff = Infinity;
             datos.forEach(f => { const d = Math.abs(f['T'] - val); if(d < diff) { diff = d; mejor = f; } });
             if(mejor && diff < 0.5) {
-                document.getElementById('resultsContent').innerHTML = Object.keys(mejor).map(k => 
-                    `<div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>${k.toUpperCase()}</h5><p>${mejor[k]}</p></div></div>`
-                ).join('');
+                document.getElementById('resultsContent').innerHTML = `
+                    <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>PRESIÓN (MPa)</h5><p>${mejor.P}</p></div></div>
+                    <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>TEMPERATURA (°C)</h5><p>${mejor.T}</p></div></div>
+                    <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>VOLUMEN ESPECÍFICO (m³/kg)</h5><p>${mejor.v}</p></div></div>
+                    <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>ENERGÍA INTERNA (kJ/kg)</h5><p>${mejor.u}</p></div></div>
+                    <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>ENTALPÍA (kJ/kg)</h5><p>${mejor.h}</p></div></div>
+                    <div class="col-md-4"><div class="text-center p-3 bg-dark rounded"><h5>ENTROPÍA (kJ/kg·K)</h5><p>${mejor.s}</p></div></div>
+                `;
                 document.getElementById('resultsBox').classList.add('show');
             } else alert('No encontrado');
         }

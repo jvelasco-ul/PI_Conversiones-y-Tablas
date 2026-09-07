@@ -1,7 +1,1 @@
-(tablas/tabla-A7.html, herramientas/tablas-y-calculadoras.html, index.html, tablas/tabla-f1.html, tablas/tabla-f2.html, tablas/tabla-f3.html are source/config files)
-
-(tablas/tabla_A7_gases_ideales.json is a data/config file)
-
-No build artifacts, dependencies, or temp files detected in the changes. Only source/config files were added/modified.
-
-Nothing to ignore.
+(tabla-A13.html is a source/config file, and there are no build artifacts, dependencies, or temp files in the changes)
