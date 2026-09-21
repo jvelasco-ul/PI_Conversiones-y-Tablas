@@ -74,20 +74,30 @@
         .dropdown-menu-dark {
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid var(--secondary-color);
-            z-index: 10000 !important;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         
         .dropdown-menu {
-            z-index: 10000 !important;
-            position: absolute !important;
+            position: fixed !important;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         
         .dropdown-menu.show {
+            position: fixed !important;
             z-index: 10000 !important;
         }
         
         .navbar-collapse {
-            z-index: 9999 !important;
+            position: relative;
+            z-index: 1000;
+        }
+        
+        /* Asegurar que el dropdown de tablas sea visible */
+        .nav-item.dropdown:nth-child(3) .dropdown-menu {
+            position: fixed !important;
+            z-index: 10000 !important;
         }
         
         /* Dashboard Title */
