@@ -74,10 +74,19 @@
         .dropdown-menu-dark {
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid var(--secondary-color);
-            z-index: 9999 !important;
+            z-index: 10000 !important;
         }
         
         .dropdown-menu {
+            z-index: 10000 !important;
+            position: absolute !important;
+        }
+        
+        .dropdown-menu.show {
+            z-index: 10000 !important;
+        }
+        
+        .navbar-collapse {
             z-index: 9999 !important;
         }
         
