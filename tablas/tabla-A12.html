@@ -22,6 +22,11 @@
         .formula-box { background: rgba(0,102,204,0.2); border-left: 4px solid var(--secondary-color); padding: 1.5rem; border-radius: 8px; }
         .data-table { background: rgba(255,255,255,0.05); border-radius: 10px; }
         .data-table thead { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); }
+        .data-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
         .data-table tbody tr:hover { background: rgba(255,102,0,0.2); }
         .calculator-panel { background: linear-gradient(135deg, rgba(0,102,204,0.3), rgba(255,102,0,0.2)); border-radius: 15px; padding: 2rem; margin: 2rem 0; }
         .btn-calculate { background: linear-gradient(135deg, var(--secondary-color), #ff9933); border: none; font-weight: 700; }
